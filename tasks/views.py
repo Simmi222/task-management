@@ -28,26 +28,30 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         """Check permissions before updating"""
-        try:
-            task = self.get_object()
-            user = self.request.user
-            
-            # Get user role safely
-            user_role = getattr(user, 'role', 'USER')
-            
-            # Check if user has permission to update this task
-            if user_role == 'ADMIN':
-                serializer.save()
-            elif user_role == 'MANAGER' and task.project.owner.id == user.id:
-                serializer.save()
-            elif task.assigned_to and task.assigned_to.id == user.id:
-                # User can update their assigned tasks
-                serializer.save()
-            else:
-                raise PermissionDenied(
-                    detail='You do not have permission to update this task. Make sure task is assigned to you.'
-                )
-        except Task.DoesNotExist:
-            raise PermissionDenied(
-                detail='Task not found or you do not have permission to access it.'
-            )
+        task = serializer.instance
+        user = self.request.user
+        
+        # Get user role safely
+        user_role = getattr(user, 'role', 'USER')
+        user_id = user.id
+        
+        # Check if user has permission to update this task
+        if user_role == 'ADMIN':
+            # Admin can update any task
+            serializer.save()
+            return
+        
+        if user_role == 'MANAGER' and task.project.owner_id == user_id:
+            # Manager can update tasks in their projects
+            serializer.save()
+            return
+        
+        if task.assigned_to_id == user_id:
+            # User can update their assigned tasks
+            serializer.save()
+            return
+        
+        # No permission
+        raise PermissionDenied(
+            detail=f'You do not have permission to update this task. Your role: {user_role}, Task assigned to: {task.assigned_to_id}'
+        )
