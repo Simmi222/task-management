@@ -4,6 +4,8 @@ from users.serializers import UserSerializer
 from projects.serializers import ProjectSerializer
 
 class TaskSerializer(serializers.ModelSerializer):
+    project = ProjectSerializer(read_only=True)
+    assigned_to = UserSerializer(read_only=True)
     
     class Meta:
         model = Task

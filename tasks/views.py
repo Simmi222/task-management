@@ -41,8 +41,8 @@ class TaskViewSet(viewsets.ModelViewSet):
             serializer.save()
             return
         
-        if user_role == 'MANAGER' and task.project.owner_id == user_id:
-            # Manager can update tasks in their projects
+        if user_role == 'MANAGER':
+            # Manager can update any task
             serializer.save()
             return
         
