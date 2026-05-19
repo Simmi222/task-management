@@ -3,6 +3,7 @@ from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from .models import Task
 from .serializers import TaskSerializer, TaskReadSerializer
+from projects.models import Project
 from core.permissions import IsTaskParticipantOrAdmin, IsManager
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -26,32 +27,37 @@ class TaskViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
 
+    def perform_create(self, serializer):
+        """Handle task creation with assigned_to_id"""
+        project_id = self.request.data.get('project')
+        assigned_to_id = self.request.data.get('assigned_to_id')
+        
+        if not project_id:
+            raise PermissionDenied(detail='Project is required')
+        
+        project = get_object_or_404(Project, id=project_id)
+        
+        if assigned_to_id:
+            from users.models import User
+            assigned_to = get_object_or_404(User, id=assigned_to_id)
+            serializer.save(project=project, assigned_to=assigned_to)
+        else:
+            serializer.save(project=project)
+
     def perform_update(self, serializer):
         """Check permissions before updating"""
-        task = serializer.instance
         user = self.request.user
-        
-        # Get user role safely
         user_role = getattr(user, 'role', 'USER')
-        user_id = user.id
         
-        # Check if user has permission to update this task
-        if user_role == 'ADMIN':
-            # Admin can update any task
+        # ADMIN and MANAGER can always update tasks
+        if user_role in ['ADMIN', 'MANAGER']:
             serializer.save()
             return
         
-        if user_role == 'MANAGER':
-            # Manager can update any task
+        # Regular users can only update their own tasks
+        task = serializer.instance
+        if task.assigned_to_id == user.id:
             serializer.save()
             return
         
-        if task.assigned_to_id == user_id:
-            # User can update their assigned tasks
-            serializer.save()
-            return
-        
-        # No permission
-        raise PermissionDenied(
-            detail=f'You do not have permission to update this task. Your role: {user_role}, Task assigned to: {task.assigned_to_id}'
-        )
+        raise PermissionDenied(detail='You can only update tasks assigned to you.')
