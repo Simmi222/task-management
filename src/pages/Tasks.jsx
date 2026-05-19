@@ -1,15 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD:src/pages/Tasks.jsx
+import { useSearchParams } from 'react-router-dom';
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Tasks.jsx
 import AuthContext from '../context/AuthContext';
 
 const Tasks = () => {
   const { authTokens, user } = useContext(AuthContext);
+<<<<<<< HEAD:src/pages/Tasks.jsx
+  const [searchParams] = useSearchParams();
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Tasks.jsx
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+<<<<<<< HEAD:src/pages/Tasks.jsx
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+=======
   const [searchTerm, setSearchTerm] = useState('');
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Tasks.jsx
 
   const fetchData = async () => {
     try {
@@ -41,7 +53,11 @@ const Tasks = () => {
         title: e.target.title.value,
         description: e.target.description.value,
         project: parseInt(e.target.project.value),
+<<<<<<< HEAD:src/pages/Tasks.jsx
+        assigned_to_id: assignedToValue ? parseInt(assignedToValue) : null,
+=======
         assigned_to: assignedToValue ? parseInt(assignedToValue) : null,
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Tasks.jsx
         status: 'TODO'
       }, {
         headers: { Authorization: `Bearer ${authTokens.access}` }
@@ -78,6 +94,24 @@ const Tasks = () => {
     }
   };
 
+<<<<<<< HEAD:src/pages/Tasks.jsx
+  const handleDeleteTask = async (taskId, taskTitle, projectName) => {
+    if (window.confirm(`Are you sure you want to delete the task "${taskTitle}" from project "${projectName}"?`)) {
+      try {
+        await axios.delete(`http://127.0.0.1:8000/api/tasks/${taskId}/`, {
+          headers: { Authorization: `Bearer ${authTokens.access}` }
+        });
+        alert(`Task "${taskTitle}" deleted successfully.`);
+        fetchData();
+      } catch (err) {
+        const errorMsg = err.response?.data?.detail || 'Failed to delete task.';
+        alert(`Error: ${errorMsg}`);
+      }
+    }
+  };
+
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Tasks.jsx
   return (
     <div className="container">
       <div className="glass-card" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', gap: '1rem', flexWrap: 'wrap'}}>
@@ -145,9 +179,24 @@ const Tasks = () => {
                       <h4 style={{margin: 0, fontSize: '0.95rem'}}>{t.title}</h4>
                       <p style={{fontSize: '0.8rem', color: 'var(--text-muted)', margin: '0.5rem 0'}}>{t.project.name}</p>
                       {t.assigned_to && <p style={{fontSize: '0.75rem', color: 'var(--warning)', margin: '0.25rem 0'}}>Assigned to: {t.assigned_to.username}</p>}
+<<<<<<< HEAD:src/pages/Tasks.jsx
+                      <div style={{display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap'}}>
+                        {statusGroup !== 'TODO' && <button className="btn btn-secondary" style={{padding: '0.2rem 0.5rem', fontSize: '0.8rem'}} onClick={() => updateStatus(t.id, statusGroup === 'DONE' ? 'IN_PROGRESS' : 'TODO')}>&lt; Move</button>}
+                        {statusGroup !== 'DONE' && <button className="btn btn-secondary" style={{padding: '0.2rem 0.5rem', fontSize: '0.8rem'}} onClick={() => updateStatus(t.id, statusGroup === 'TODO' ? 'IN_PROGRESS' : 'DONE')}>Move &gt;</button>}
+                        {user?.role !== 'USER' && (
+                          <button 
+                            className="btn btn-secondary"
+                            style={{padding: '0.2rem 0.5rem', fontSize: '0.8rem', background: 'rgba(239, 68, 68, 0.5)', border: '1px solid rgba(239, 68, 68, 0.8)', marginLeft: 'auto'}}
+                            onClick={() => handleDeleteTask(t.id, t.title, t.project.name)}
+                          >
+                            🗑️ Delete
+                          </button>
+                        )}
+=======
                       <div style={{display: 'flex', gap: '0.5rem', marginTop: '1rem'}}>
                         {statusGroup !== 'TODO' && <button className="btn btn-secondary" style={{padding: '0.2rem 0.5rem', fontSize: '0.8rem'}} onClick={() => updateStatus(t.id, statusGroup === 'DONE' ? 'IN_PROGRESS' : 'TODO')}>&lt; Move</button>}
                         {statusGroup !== 'DONE' && <button className="btn btn-secondary" style={{padding: '0.2rem 0.5rem', fontSize: '0.8rem', marginLeft: 'auto'}} onClick={() => updateStatus(t.id, statusGroup === 'TODO' ? 'IN_PROGRESS' : 'DONE')}>Move &gt;</button>}
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Tasks.jsx
                       </div>
                     </div>
                   ))

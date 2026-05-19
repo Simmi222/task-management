@@ -46,7 +46,13 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (authTokens) {
             try {
+<<<<<<< HEAD:src/context/AuthContext.jsx
+                const decoded = jwtDecode(authTokens.access);
+                setUser(decoded);
+                localStorage.setItem('user_id', decoded.user_id);
+=======
                 setUser(jwtDecode(authTokens.access));
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/context/AuthContext.jsx
             } catch (err) {
                 logoutUser();
             }

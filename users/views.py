@@ -10,7 +10,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['role'] = user.role
+<<<<<<< HEAD:users/views.py
         token['user_id'] = user.id
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):frontend/users/views.py
         return token
 
 class CustomTokenObtainPairView(TokenObtainPairView):

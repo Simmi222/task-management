@@ -4,7 +4,6 @@ from users.serializers import UserSerializer
 from projects.serializers import ProjectSerializer
 
 class TaskSerializer(serializers.ModelSerializer):
-<<<<<<< HEAD:tasks/serializers.py
     project = ProjectSerializer(read_only=True)
     assigned_to_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
     assigned_to = UserSerializer(read_only=True)
@@ -37,12 +36,6 @@ class TaskSerializer(serializers.ModelSerializer):
                 pass
         
         return task
-=======
-    
-    class Meta:
-        model = Task
-        fields = ('id', 'title', 'description', 'status', 'project', 'assigned_to', 'created_at')
->>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):frontend/tasks/serializers.py
 
 class TaskReadSerializer(serializers.ModelSerializer):
     project = ProjectSerializer(read_only=True)

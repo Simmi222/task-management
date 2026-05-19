@@ -41,6 +41,24 @@ const Projects = () => {
     }
   };
 
+<<<<<<< HEAD:src/pages/Projects.jsx
+  const handleDelete = async (projectId, projectName) => {
+    if (window.confirm(`Are you sure you want to delete the project "${projectName}"? This will also delete all associated tasks.`)) {
+      try {
+        await axios.delete(`http://127.0.0.1:8000/api/projects/${projectId}/`, {
+          headers: { Authorization: `Bearer ${authTokens.access}` }
+        });
+        alert(`Project "${projectName}" deleted successfully.`);
+        fetchProjects();
+      } catch (err) {
+        const errorMsg = err.response?.data?.detail || 'Failed to delete project.';
+        alert(`Error: ${errorMsg}`);
+      }
+    }
+  };
+
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Projects.jsx
   return (
     <div className="container">
       <div className="glass-card" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
@@ -75,10 +93,28 @@ const Projects = () => {
             <div key={p.id} className="glass-card" style={{padding: '1.5rem', borderLeft: '4px solid var(--primary)'}}>
               <h3 style={{color: 'var(--text-main)', marginBottom: '0.5rem'}}>{p.name}</h3>
               <p style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>{p.description}</p>
+<<<<<<< HEAD:src/pages/Projects.jsx
+              <div style={{marginTop: '1rem', display: 'flex', gap: '1rem', fontSize: '0.8rem', flexWrap: 'wrap'}}>
+                <span style={{background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.5rem', borderRadius: '4px'}}>Status: {p.status}</span>
+                <span style={{background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.5rem', borderRadius: '4px'}}>Owner: {p.owner?.username}</span>
+              </div>
+              {user?.role !== 'USER' && (
+                <div style={{marginTop: '1rem', display: 'flex', gap: '0.5rem'}}>
+                  <button 
+                    className="btn"
+                    style={{padding: '0.5rem 1rem', fontSize: '0.85rem', background: 'rgba(239, 68, 68, 0.7)', border: '1px solid rgba(239, 68, 68, 1)'}}
+                    onClick={() => handleDelete(p.id, p.name)}
+                  >
+                    🗑️ Delete Project
+                  </button>
+                </div>
+              )}
+=======
               <div style={{marginTop: '1rem', display: 'flex', gap: '1rem', fontSize: '0.8rem'}}>
                 <span style={{background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.5rem', borderRadius: '4px'}}>Status: {p.status}</span>
                 <span style={{background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.5rem', borderRadius: '4px'}}>Owner: {p.owner?.username}</span>
               </div>
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/pages/Projects.jsx
             </div>
           ))}
         </div>

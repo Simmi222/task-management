@@ -2,11 +2,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+<<<<<<< HEAD:src/components/Header.css
+  padding: 1.25rem 2rem;
+=======
   padding: 1rem 2rem;
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/components/Header.css
   margin: 1rem 1rem 1rem 0;
   border-radius: 16px;
 }
 
+<<<<<<< HEAD:src/components/Header.css
+.header-search {
+  flex: 1;
+  max-width: 400px;
+}
+
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/components/Header.css
 .header-profile {
   display: flex;
   align-items: center;
@@ -17,11 +29,21 @@
 .avatar {
   background: var(--primary);
   color: white;
+<<<<<<< HEAD:src/components/Header.css
+  width: 48px;
+  height: 48px;
+=======
   width: 40px;
   height: 40px;
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/components/Header.css
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+<<<<<<< HEAD:src/components/Header.css
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+=======
+>>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):backend/src/components/Header.css
 }

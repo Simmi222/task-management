@@ -3,10 +3,7 @@ from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from .models import Task
 from .serializers import TaskSerializer, TaskReadSerializer
-<<<<<<< HEAD:tasks/views.py
 from projects.models import Project
-=======
->>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):frontend/tasks/views.py
 from core.permissions import IsTaskParticipantOrAdmin, IsManager
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -30,7 +27,6 @@ class TaskViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
 
-<<<<<<< HEAD:tasks/views.py
     def perform_create(self, serializer):
         """Handle task creation with assigned_to_id"""
         project_id = self.request.data.get('project')
@@ -65,30 +61,3 @@ class TaskViewSet(viewsets.ModelViewSet):
             return
         
         raise PermissionDenied(detail='You can only update tasks assigned to you.')
-=======
-    def perform_update(self, serializer):
-        """Check permissions before updating"""
-        try:
-            task = self.get_object()
-            user = self.request.user
-            
-            # Get user role safely
-            user_role = getattr(user, 'role', 'USER')
-            
-            # Check if user has permission to update this task
-            if user_role == 'ADMIN':
-                serializer.save()
-            elif user_role == 'MANAGER' and task.project.owner.id == user.id:
-                serializer.save()
-            elif task.assigned_to and task.assigned_to.id == user.id:
-                # User can update their assigned tasks
-                serializer.save()
-            else:
-                raise PermissionDenied(
-                    detail='You do not have permission to update this task. Make sure task is assigned to you.'
-                )
-        except Task.DoesNotExist:
-            raise PermissionDenied(
-                detail='Task not found or you do not have permission to access it.'
-            )
->>>>>>> aaff6f9 (Add fixes for task assignment and JWT token):frontend/tasks/views.py
